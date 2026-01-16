@@ -1,0 +1,26 @@
+name: Promote Dev to QA
+
+on:
+  workflow_dispatch:   # ✅ Only manual trigger
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name " shashivignesh "
+          git config user.email " paritalashashi210@gmail.com "
+
+      - name: Merge dev into qa
+        run: |
+          git checkout qa
+          git pull origin qa
+          git merge origin/dev --no-ff -m "Promote dev to qa"
+          git push origin qa
